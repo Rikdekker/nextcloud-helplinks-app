@@ -246,18 +246,26 @@
                             {{ t('helplinks', 'Need help? Contact your IT Service Desk.') }}
                         </p>
 
-                        <ul class="links-list">
+                        <ul class="links-list support-options">
                             <!-- Support via e-mail -->
-                            <li v-if="supportEmail">
+                            <li v-if="supportEmail" class="support-option">
                                 <a :href="`mailto:${supportEmail}`">
-                                    <u>{{ t('helplinks', 'Request support from your IT Service Desk') }}</u> ↗
+                                    <EmailOutline :size="24" class="support-option-icon" />
+                                    <span class="support-option-text">
+                                        <span class="support-option-label">{{ t('helplinks', 'Via email') }}</span>
+                                        <span><u>{{ t('helplinks', 'Request support from your IT Service Desk') }}</u> ↗</span>
+                                    </span>
                                 </a>
                             </li>
 
                             <!-- Support via URL -->
-                            <li v-if="supportUrl">
+                            <li v-if="supportUrl" class="support-option">
                                 <a :href="supportUrl" target="_blank" rel="noopener">
-                                    <u>{{ t('helplinks', 'Request support from your IT Service Desk') }}</u> ↗
+                                    <Web :size="24" class="support-option-icon" />
+                                    <span class="support-option-text">
+                                        <span class="support-option-label">{{ t('helplinks', 'Via web') }}</span>
+                                        <span><u>{{ t('helplinks', 'Request support from your IT Service Desk') }}</u> ↗</span>
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -282,6 +290,8 @@ import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 import InformationOutline from 'vue-material-design-icons/InformationOutline.vue'
 import BookAccount from 'vue-material-design-icons/BookAccount.vue'
 import ChevronDown from 'vue-material-design-icons/ChevronDown.vue'
+import EmailOutline from 'vue-material-design-icons/EmailOutline.vue'
+import Web from 'vue-material-design-icons/Web.vue'
 
 export default {
     name: 'App',
@@ -298,6 +308,8 @@ export default {
         InformationOutline,
         BookAccount,
         ChevronDown,
+        EmailOutline,
+        Web,
     },
     data() {
         return {
@@ -451,6 +463,47 @@ export default {
     font-weight: 600;
 }
 
+.support-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.support-option a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--color-main-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-large);
+    overflow-wrap: anywhere;
+}
+
+.support-option a:hover,
+.support-option a:focus-visible {
+    background: var(--color-background-hover);
+}
+
+.support-option-icon {
+    flex-shrink: 0;
+}
+
+.support-option-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.support-option-label {
+    font-size: 13px;
+    font-weight: normal;
+    color: var(--color-text-maxcontrast);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
 .cloud-id-display {
     display: flex;
     align-items: center;
@@ -586,7 +639,7 @@ export default {
     font-family: monospace;
     font-size: 14px;
     margin: 10px 0;
-    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 
 .talk-download-button,

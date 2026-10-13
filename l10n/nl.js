@@ -39,6 +39,8 @@ OC.L10N.register(
         "Create WebDAV Credentials": "WebDAV-inloggegevens aanmaken",
         "Support": "Ondersteuning",
         "Need help? Contact your IT Service Desk.": "Heb je hulp nodig? Neem contact op met je IT-servicedesk.",
+        "Via email": "Via e-mail",
+        "Via web": "Via web",
         "Request support from your IT Service Desk": "Vraag ondersteuning aan bij jouw IT-servicedesk",
         "Federated Cloud ID copied to clipboard": "Gefedereerde Cloud ID gekopieerd naar klembord",
         "Failed to copy to clipboard": "Kopiëren naar klembord mislukt",
@@ -76,6 +78,8 @@ OC.L10N.register(
         "e.g., Production Environment, Research Drive": "bijv., Productieomgeving, Research Drive",
         "Support Email Address": "Ondersteuning E-mailadres",
         "e.g., servicedesk@example.com": "bijv., servicedesk@voorbeeld.nl",
+        "Support Portal URL": "Ondersteuningsportaal URL",
+        "e.g., https://servicedesk.example.com": "bijv., https://servicedesk.voorbeeld.nl",
         "Save Support Settings": "Ondersteuning Instellingen Opslaan",
         "Support settings saved": "Ondersteuning instellingen opgeslagen",
         "Failed to save support settings": "Kon ondersteuning instellingen niet opslaan"

@@ -41,6 +41,8 @@ OC.L10N.register(
     "Use these credentials to connect your WebDAV client": "Utilisez ces identifiants pour connecter votre client WebDAV",
     "Create WebDAV Credentials": "Créer des identifiants WebDAV",
     "Need help? Contact your IT Service Desk.": "Besoin d'aide ? Contactez votre service d'assistance informatique.",
+    "Via email": "Par e-mail",
+    "Via web": "Via le web",
     "Request support from your IT Service Desk": "Demander de l'assistance auprès de votre service d'assistance informatique",
     "Configure help sections and links for your Nextcloud instance": "Configurez les sections et les liens d'aide pour votre instance Nextcloud",
     "Add Section": "Ajouter une section",
@@ -76,6 +78,8 @@ OC.L10N.register(
     "e.g., Production Environment, Research Drive": "p. ex. environnement de production, Research Drive",
     "Support Email Address": "Adresse e-mail de l'assistance",
     "e.g., servicedesk@example.com": "p. ex. servicedesk@exemple.fr",
+    "Support Portal URL": "URL du portail d'assistance",
+    "e.g., https://servicedesk.example.com": "par ex., https://servicedesk.example.com",
     "Save Support Settings": "Enregistrer les paramètres d'assistance",
     "Support settings saved": "Paramètres d'assistance enregistrés",
     "Failed to save support settings": "Échec de l'enregistrement des paramètres d'assistance"
