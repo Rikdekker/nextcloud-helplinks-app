@@ -1,5 +1,41 @@
 <template>
   <div class="helplinks-admin">
+    <!-- IT support settings -->
+    <div class="admin-section support-settings">
+      <h3>{{ t('helplinks', 'IT Support Settings') }}</h3>
+      <p class="settings-hint">{{ t('helplinks', 'Configure IT support contact information') }}</p>
+
+      <div class="section-fields">
+        <NcTextField
+          v-model="settings.environmentName"
+          :label="t('helplinks', 'Environment Name')"
+          :placeholder="t('helplinks', 'e.g., Production Environment, Research Drive')"
+        />
+        <NcTextField
+          v-model="settings.supportEmail"
+          :label="t('helplinks', 'Support Email Address')"
+          :placeholder="t('helplinks', 'e.g., servicedesk@example.com')"
+          type="email"
+        />
+        <NcTextField
+          v-model="settings.supportUrl"
+          :label="t('helplinks', 'Support Portal URL')"
+          :placeholder="t('helplinks', 'e.g., https://servicedesk.example.com')"
+          type="url"
+        />
+      </div>
+
+      <div class="support-settings-actions">
+        <NcButton type="primary" @click="saveSettings" :disabled="savingSettings">
+          <template #icon>
+            <Check v-if="!savingSettings" :size="20" />
+            <NcLoadingIcon v-else :size="20" />
+          </template>
+          {{ t('helplinks', 'Save Support Settings') }}
+        </NcButton>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="admin-header">
       <NcButton type="primary" @click="addSection">
@@ -152,6 +188,12 @@ export default {
   data() {
     return {
       sections: [],
+      settings: {
+        supportEmail: '',
+        supportUrl: '',
+        environmentName: ''
+      },
+      savingSettings: false,
       // Ids of persisted sections removed in the UI; deleted on the server
       // during saveAll. New (unsaved) sections are dropped without a call.
       deletedIds: [],
@@ -170,6 +212,12 @@ export default {
       try {
         const response = await axios.get(generateUrl('/apps/helplinks/api/sections'))
         const list = response.data.sections ?? []
+
+        this.settings = {
+          supportEmail: response.data.supportEmail ?? '',
+          supportUrl: response.data.supportUrl ?? '',
+          environmentName: response.data.environmentName ?? ''
+        }
 
         this.sections = list.map(item => {
           const section = item.section
@@ -284,6 +332,29 @@ export default {
       }
     },
 
+    async saveSettings() {
+      this.savingSettings = true
+      try {
+        const res = await axios.post(generateUrl('/apps/helplinks/api/settings'), {
+          supportEmail: this.settings.supportEmail.trim(),
+          supportUrl: this.settings.supportUrl.trim(),
+          environmentName: this.settings.environmentName.trim()
+        })
+        const saved = res.data.settings ?? {}
+        this.settings = {
+          supportEmail: saved.supportEmail ?? '',
+          supportUrl: saved.supportUrl ?? '',
+          environmentName: saved.environmentName ?? ''
+        }
+        showSuccess(t('helplinks', 'Support settings saved'))
+      } catch (err) {
+        console.error('Saving support settings failed', err)
+        showError(t('helplinks', 'Failed to save support settings'))
+      } finally {
+        this.savingSettings = false
+      }
+    },
+
     markChanged() {
       this.hasChanges = true
     },
@@ -335,6 +406,9 @@ export default {
 
 <style scoped>
 .helplinks-admin { padding: 20px 0; }
+.support-settings { margin-bottom: 30px; }
+.support-settings h3 { margin: 0 0 5px 0; font-size: 16px; font-weight: 600; }
+.support-settings-actions { margin-top: 15px; }
 .admin-header { display: flex; gap: 10px; margin-bottom: 20px; }
 .sections-list { display: flex; flex-direction: column; gap: 20px; }
 .admin-section { background: var(--color-main-background); border: 1px solid var(--color-border); border-radius: var(--border-radius-large); padding: 20px; }
