@@ -82,6 +82,10 @@ OC.L10N.register(
         "e.g., https://servicedesk.example.com": "bijv., https://servicedesk.voorbeeld.nl",
         "Save Support Settings": "Ondersteuning Instellingen Opslaan",
         "Support settings saved": "Ondersteuning instellingen opgeslagen",
-        "Failed to save support settings": "Kon ondersteuning instellingen niet opslaan"
+        "Failed to save support settings": "Kon ondersteuning instellingen niet opslaan",
+        "A tour shows you around step by step. Choose one to start it.": "Een tour leidt je stap voor stap rond. Kies er een om te beginnen.",
+        "There are no tours for you at the moment.": "Er zijn op dit moment geen tours voor jou.",
+        "Tour settings": "Tourinstellingen",
+        "Welcome tour": "Welkomsttour"
     },
     "nplurals=2; plural=(n != 1);");

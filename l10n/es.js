@@ -82,7 +82,11 @@ OC.L10N.register(
     "e.g., https://servicedesk.example.com": "p. ej., https://servicedesk.example.com",
     "Save Support Settings": "Guardar ajustes de soporte",
     "Support settings saved": "Ajustes de soporte guardados",
-    "Failed to save support settings": "No se pudieron guardar los ajustes de soporte"
+    "Failed to save support settings": "No se pudieron guardar los ajustes de soporte",
+    "A tour shows you around step by step. Choose one to start it.": "Un recorrido te guía paso a paso. Elige uno para empezarlo.",
+    "There are no tours for you at the moment.": "Por ahora no hay recorridos para ti.",
+    "Tour settings": "Ajustes de recorridos",
+    "Welcome tour": "Recorrido de bienvenida"
 },
     "nplurals=2; plural=(n != 1);"
 );

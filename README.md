@@ -17,16 +17,18 @@ This allows you to easily create a clear help page yourself.
 
 ### Introvox Interactive Tutorial
 
-The app can be combined with the Introvox Interactive Tutorial. When this app is enabled, this option will become visible as an option within the app. The Introvox Interactive tutorial can be found in the Nextcloud App Store.
+The app can be combined with the Introvox Interactive Tutorial. When IntroVox is enabled for a user, the Help page lists the tours that user may get, each with a link that starts it. The list is kept per user and refreshed at most once a day, only when that user opens Help; there is no background job. The Introvox Interactive tutorial can be found in the Nextcloud App Store.
 
 ### Supportdesk
 
 In addition to a reference to your wiki and the Introvox Interactive Tutorial, you can also add a reference to a service desk email address or service desk URL if the user requires further support.
 
-These options must be entered directly into the database.
+Set these under **Administration settings > Additional settings > IT Support Settings**, or with occ:
 
 ```
-insert into oc_appconfig (appid,configkey,configvalue) VALUES ('helplinks','support_email','helpdesk@surf.nl');
-insert into oc_appconfig (appid,configkey,configvalue) VALUES ('helplinks','support_url','https://servicedesk.surf.nl');
+occ config:app:set helplinks support_email --value=helpdesk@surf.nl
+occ config:app:set helplinks support_url --value=https://servicedesk.surf.nl
 ```
+
+See [docs/HowItWorks.md](docs/HowItWorks.md) for how the app works and where it stores things.
 

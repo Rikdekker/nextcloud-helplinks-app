@@ -24,19 +24,53 @@
                     <div v-if="introvoxEnabled" :class="firstSection ? 'help-row' : ''">
                         <div class="help-section introvox-section">
                             <h3>{{ t('helplinks', 'Introduction tour') }}</h3>
-                            <p class="section-description">
-                                {{ t('helplinks', 'With the introduction tour, you can get started quickly and become familiar with the environment. You can find the tour in your personal settings.') }}
-                            </p>
-                            <NcButton
-                                type="primary"
-                                @click="openIntrovoxHelp"
-                                class="introvox-help-button"
-                            >
-                                <template #icon>
-                                    <HelpCircle :size="20" />
-                                </template>
-                                {{ t('helplinks', 'Go to the tour') }}
-                            </NcButton>
+                            <!-- Without a tour list (IntroVox could not be read) the card is
+                                 as it always was: one button to the personal settings. -->
+                            <template v-if="introvoxTours === null">
+                                <p class="section-description">
+                                    {{ t('helplinks', 'With the introduction tour, you can get started quickly and become familiar with the environment. You can find the tour in your personal settings.') }}
+                                </p>
+                                <NcButton
+                                    type="primary"
+                                    @click="openIntrovoxHelp"
+                                    class="introvox-help-button"
+                                >
+                                    <template #icon>
+                                        <HelpCircle :size="20" />
+                                    </template>
+                                    {{ t('helplinks', 'Go to the tour') }}
+                                </NcButton>
+                            </template>
+
+                            <template v-else>
+                                <p class="section-description">
+                                    {{ t('helplinks', 'A tour shows you around step by step. Choose one to start it.') }}
+                                </p>
+                                <ul v-if="introvoxTours.length" class="links-list support-options tour-options">
+                                    <li v-for="tour in introvoxTours" :key="tour.id" class="support-option">
+                                        <a :href="tourUrl(tour)">
+                                            <img v-if="tour.app && tour.app.icon"
+                                                :src="tour.app.icon"
+                                                alt=""
+                                                class="tour-icon">
+                                            <HelpCircle v-else :size="20" class="support-option-icon" />
+                                            <span>{{ tourName(tour) }}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <p v-else class="section-description">
+                                    {{ t('helplinks', 'There are no tours for you at the moment.') }}
+                                </p>
+                                <NcButton
+                                    type="secondary"
+                                    @click="openIntrovoxHelp"
+                                >
+                                    <template #icon>
+                                        <HelpCircle :size="20" />
+                                    </template>
+                                    {{ t('helplinks', 'Tour settings') }}
+                                </NcButton>
+                            </template>
                         </div>
 
                         <!-- First help section, paired with IntroVox. -->
@@ -281,7 +315,7 @@
 import { NcContent, NcAppContent, NcEmptyContent, NcButton, NcPopover } from '@nextcloud/vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import { showError } from '@nextcloud/dialogs'
+import { showError, showSuccess } from '@nextcloud/dialogs'
 import { t } from '@nextcloud/l10n'
 import HelpCircle from 'vue-material-design-icons/HelpCircle.vue'
 import Download from 'vue-material-design-icons/Download.vue'
@@ -316,6 +350,7 @@ export default {
 			appName: appName,
             sections: [],
             introvoxEnabled: false,
+            introvoxTours: null,
             talkEnabled: false,
             supportEmail: '',
             supportUrl: '',
@@ -367,6 +402,7 @@ export default {
                 this.sections = response.data.sections || []
 
                 this.introvoxEnabled = response.data.introvoxEnabled || false
+                this.introvoxTours = response.data.introvoxTours ?? null
                 this.talkEnabled = response.data.talkEnabled || false
                 this.supportEmail = response.data.supportEmail || ''
                 this.supportUrl = response.data.supportUrl || ''
@@ -390,6 +426,20 @@ export default {
                 console.error('Error copying to clipboard:', error)
                 showError(t('helplinks', 'Failed to copy to clipboard'))
             }
+        },
+
+        /**
+         * The tour's page with ?introvox-tour=<id>: IntroVox starts it there,
+         * after checking again whether this user may get it. Not its share
+         * link /apps/introvox/tour/<id>, which redirects to //apps/... on an
+         * instance with pretty URLs.
+         */
+        tourUrl(tour) {
+            return generateUrl(tour.page || '/apps/files/') + '?introvox-tour=' + encodeURIComponent(tour.id)
+        },
+
+        tourName(tour) {
+            return tour.id === 'welcome' ? t('helplinks', 'Welcome tour') : (tour.name || tour.id)
         },
 
         openIntrovoxHelp() {
@@ -671,6 +721,19 @@ export default {
 .introvox-help-button {
     margin-top: 10px;
 }
+
+.tour-options {
+    margin-bottom: 15px;
+}
+
+/* App icons in the apps menu are light, for the header: dark on a light page */
+.tour-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    filter: var(--background-invert-if-bright);
+}
+
 
 .links-list {
     list-style: none;

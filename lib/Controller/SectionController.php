@@ -4,6 +4,7 @@ namespace OCA\HelpLinks\Controller;
 use OCA\HelpLinks\AppInfo\Application;
 use OCA\HelpLinks\Service\SectionService;
 use OCA\HelpLinks\Service\SettingsService;
+use OCA\HelpLinks\Service\TourService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;
@@ -16,6 +17,7 @@ class SectionController extends Controller {
     private $appManager;
     private $settingsService;
     private $userSession;
+    private $tourService;
 
     public function __construct(
         IRequest $request,
@@ -23,12 +25,14 @@ class SectionController extends Controller {
         IAppManager $appManager,
         SettingsService $settingsService,
         IUserSession $userSession,
+        TourService $tourService,
     ) {
         parent::__construct(Application::APP_ID, $request);
         $this->service = $service;
         $this->appManager = $appManager;
         $this->settingsService = $settingsService;
         $this->userSession = $userSession;
+        $this->tourService = $tourService;
     }
 
     #[NoAdminRequired]
@@ -43,6 +47,7 @@ class SectionController extends Controller {
         return new DataResponse([
             'sections' => $sections,
             'introvoxEnabled' => $this->appManager->isEnabledForUser('introvox'),
+            'introvoxTours' => $user ? $this->tourService->getForUser($user) : null,
             'talkEnabled' => $this->appManager->isEnabledForUser('spreed'),
             'supportEmail' => $settings['supportEmail'],
             'supportUrl' => $settings['supportUrl'],
