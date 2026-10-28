@@ -26,8 +26,9 @@
                             <h3>{{ t('helplinks', 'Introduction tour') }}</h3>
                             <!-- The tours this user may get: IntroVox's own element,
                                  <introvox-tour-list> (PageController loads it), styled
-                                 here. Without it, or without tours: the link to the
-                                 personal settings. -->
+                                 here. Without tours the card is hidden; without the
+                                 element (older IntroVox, or it failed): the link to
+                                 the personal settings. -->
                             <template v-if="introvoxTourList">
                                 <p class="section-description">
                                     {{ t('helplinks', 'A tour shows you around step by step. Choose one to start it.') }}
@@ -416,9 +417,11 @@ export default {
                 return
             }
             const list = document.createElement('introvox-tour-list')
+            // No tours (switched off for everyone, or none for this user):
+            // there is nothing to start, so the card goes, like without IntroVox
             list.addEventListener('introvox:loaded', (event) => {
                 if (!event.detail.welcome && event.detail.tours.length === 0) {
-                    this.introvoxTourList = false
+                    this.introvoxEnabled = false
                 }
             })
             list.addEventListener('introvox:error', () => {
@@ -773,7 +776,7 @@ export default {
 .introvox-tours :deep(.introvox-tour-list__link:hover),
 .introvox-tours :deep(.introvox-tour-list__link:focus-visible) {
     border-color: var(--color-primary-element);
-    background: var(--color-primary-element-light);
+    background: var(--color-primary-light);
 }
 
 .introvox-tours :deep(.introvox-tour-list__name) {
